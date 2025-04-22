@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>exo3</title>
+</head>
+
+<body>
+    <div id="texte"></div>
+
+    <script type="text/javascript">
+        let repeter = true;
+        let nom = "";
+
+        do {
+            nom = prompt("Renseignez votre nom");
+
+            if (nom !== null && nom.match(/^[a-zA-Z]{2,50}$/)) {
+                repeter = !confirm('Vous avez saisi : ' + nom + '. Vous confirmez ?');
+            } else {
+                alert('Erreur de saisie !');
+            }
+        } while (repeter);
+
+        document.getElementById('texte').innerHTML = "L'utilisateur s'appelle : " + nom;
+    </script>
+</body>
+</html>
