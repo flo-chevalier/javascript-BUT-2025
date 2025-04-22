@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>dessin-triangles-boutons</title>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <section>
+        <input type="button" value="5" onclick="dessinerTriangle(5)">
+        <input type="button" value="10" onclick="dessinerTriangle(10)">
+        <input type="button" value="15" onclick="dessinerTriangle(15)">
+        <input type="button" value="reset" onclick="reset()">
+    </section>
+
+    <br>
+
+    <div id="zoneTriangle">
+    </div>
+
+    <script type="text/javascript">
+        function dessinerTriangle(taille) {
+            let triangle = 'Triangle de taille ' + taille + '<br><br>';
+
+            for (let i = 1; i <= taille; i++) {
+                for (let j = 1; j <= i; j++) {
+                    triangle += '* ';
+                }
+
+                triangle += '<br>';
+            }
+
+            document.getElementById('zoneTriangle').innerHTML = triangle;
+        }
+
+        function reset() {
+            document.getElementById('zoneTriangle').innerHTML = "";
+        }
+    </script>
+</body>
+</html>
