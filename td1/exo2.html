@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>exo2</title>
+</head>
+
+<body>
+
+    <div id="texte"></div>
+
+    <script type="text/javascript">
+        let verif = confirm('Êtes-vous étudiant ?');
+
+        if (verif) {
+            document.getElementById('texte').innerHTML = "L'utilisateur a validé";
+        } else {
+            document.getElementById('texte').innerHTML = "L'utilisateur a annulé";
+        }
+    </script>
+</body>
+</html>
