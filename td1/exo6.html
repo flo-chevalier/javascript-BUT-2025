@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>exo8</title>
+    <style>
+        body {
+            margin: 2em;
+        }
+        #cadre1, #cadre2 {
+            border: solid black 2px;
+            width: 250px;
+            min-height: 150px;
+            display: inline-block;
+        }
+        #cadre2 {
+            margin-left: 1em;
+        }
+        .corail {
+            background-color: coral;
+        }
+        .bleu {
+            background-color: cornflowerblue;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Les rectangles changent de couleur</h1>
+
+    <div id="cadre1" class="corail" onmouseenter="changerCouleurPourBleu(this)" onmouseout="changerCouleurPourCorail(this)"></div>
+    <div id="cadre2" class="corail" onmouseenter="changerCouleurPourBleu(this)" onmouseout="changerCouleurPourCorail(this)"></div>
+
+    <script type="text/javascript">
+        function changerCouleurPourBleu(cadre) {
+            cadre.className = 'bleu';
+        }
+
+        function changerCouleurPourCorail(cadre) {
+            cadre.className = 'corail';
+        }
+    </script>
+</body>
+</html>
