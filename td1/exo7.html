@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>La moselle des jeux</title>
+    <style>
+        #infos {
+            font-size: 2em;
+        }
+
+        #cadre {
+            margin: auto;
+            position: relative;
+            width: 450px;
+            height: 450px;
+            text-align: center;
+            border: solid thin black;
+        }
+
+        #cadre p {
+            margin: 0;
+            display: table-cell;
+            position: relative;
+            height: inherit;
+            width: inherit;
+            font-size: 5em;
+            vertical-align: middle;
+        }
+
+        span {
+            width: 15px;
+            height: 15px;
+            position: absolute;
+            background-color: darkgrey;
+        }
+
+        .transparent {
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div id="infos">Gratter ici --></div>
+    <span class="transparent"></span>
+
+    <div id="cadre">
+        <p id="texte"></p>
+    </div>
+
+    <script type="text/javascript">
+        const GAGNE = 'Gagné';
+        const PERDU = 'Perdu';
+        const CADRE = document.getElementById('cadre');
+        const LARGEUR = CADRE.clientWidth;
+        const TAILLE =  document.getElementsByTagName('span')[0].clientWidth;
+
+        const texte = Math.random() < 0.5 ? GAGNE : PERDU;
+
+        document.getElementById('texte').innerHTML = texte;
+
+        function estDansLeCadre(x, y) {
+            return x >= 0 && x < LARGEUR && y >= 0 && y < LARGEUR;
+        }
+
+        function ajouterEcouteur(point) {
+            point.onmouseout = () => {
+                point.className = 'transparent';
+            }
+        }
+
+        for (let x = 0; x < LARGEUR; x += TAILLE) {
+            for (let y = 0; y < LARGEUR; y += TAILLE) {
+                if (estDansLeCadre(x, y)) {
+                    let point = document.createElement('span');
+                    point.style.left = x + 'px';
+                    point.style.top = y + 'px';
+                    CADRE.appendChild(point);
+                    ajouterEcouteur(point);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

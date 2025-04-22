@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Jeu du Morpion</title>
+    <meta charset="UTF-8" />
+    <style>
+        td {
+            height: 4em;
+            width: 4em;
+        }
+        img {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body bgcolor="white">
+<h1>Jeu du Morpion</h1>
+
+<table border="1" cellpadding="0" cellspacing="0">
+    <tr>
+        <td><img src="images/blanc.gif" onmouseover="entreeSouris(this)" onmouseout="sortieSouris()"></td>
+        <td><img src="images/blanc.gif" onmouseover="entreeSouris(this)" onmouseout="sortieSouris()"></td>
+        <td><img src="images/blanc.gif" onmouseover="entreeSouris(this)" onmouseout="sortieSouris()"></td>
+    </tr>
+    <tr>
+        <td><img src="images/blanc.gif" onmouseover="entreeSouris(this)" onmouseout="sortieSouris()"></td>
+        <td><img src="images/blanc.gif" onmouseover="entreeSouris(this)" onmouseout="sortieSouris()"></td>
+        <td><img src="images/blanc.gif" onmouseover="entreeSouris(this)" onmouseout="sortieSouris()"></td>
+    </tr>
+    <tr>
+        <td><img src="images/blanc.gif" onmouseover="entreeSouris(this)" onmouseout="sortieSouris()"></td>
+        <td><img src="images/blanc.gif" onmouseover="entreeSouris(this)" onmouseout="sortieSouris()"></td>
+        <td><img src="images/blanc.gif" onmouseover="entreeSouris(this)" onmouseout="sortieSouris()"></td>
+    </tr>
+</table>
+
+<script type="text/javascript">
+    var caseActive = null;
+
+    function entreeSouris(caseCourante) {
+        caseActive = caseCourante;
+    }
+
+    function sortieSouris() {
+        caseActive = null;
+    }
+
+    window.onkeyup = function(event) {
+        if (caseActive !== null && !caseActive.classList.contains('desactiver')) {
+            const key = event.keyCode ? event.keyCode : event.which;
+
+            if (key === 79) { //si touche o
+                caseActive.src = 'images/rond.gif';
+                caseActive.className = 'desactiver';
+            } else if (key === 88) { // si touche x
+                caseActive.src = 'images/croix.gif';
+                caseActive.className = 'desactiver';
+            }
+
+            caseActive = null;
+        }
+    }
+</script>
+</body>
+</html>
