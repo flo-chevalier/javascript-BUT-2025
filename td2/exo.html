@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Mon formulaire</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <h1>Valider un formulaire</h1>
+
+    <section>
+        <form action="resultat.html" method="get" name="formulaire" onsubmit="return validerFormulaire()">
+            <div>
+                <label for="nom">Nom :</label>
+                <input type="text" name="nom" id="nom" onkeyup="verifierNom()">
+                <span id="erreurNom" class="erreur">Saisir un nom, entre 2 et 10 caracteres</span>
+            </div>
+            <div>
+                <label for="prenom">Prenom :</label>
+                <input type="text" name="prenom" id="prenom" onkeyup="verifierPrenom()">
+                <span id="erreurPrenom" class="erreur">Saisir un prenom, entre 2 et 10 caracteres</span>
+            </div>
+            <div>
+                <label for="email">Email :</label>
+                <input type="email" name="email" id="email" onkeyup="verifierEmail()">
+                <span id="erreurEmail" class="erreur">Saisir une adresse email valide</span>
+            </div>
+            <div>
+                <label for="formation">Formation :</label>
+                <select name="formation" id="formation" onchange="verifierFormation()">
+                    <option value="" selected></option>
+                    <option value="info">Informatique</option>
+                    <option value="maths">Maths</option>
+                    <option value="physique">Physique</option>
+                </select>
+                <span id="erreurFormation" class="erreur">La formation est obligatoire</span>
+            </div>
+
+            <hr>
+            <div>
+                <div id="explication">
+                    <ul>
+                        <li><img id="case1" src="img/vide.png" height="21" alt="une case">
+                            Le mot de passe doit contenir des lettres et des chiffres</li>
+                        <li><img id="case2" src="img/vide.png" height="21" alt="une case">
+                            Le mot de passe doit contenir au moins un caractères spécial</li>
+                        <li><img id="case3" src="img/vide.png" height="21" alt="une case">
+                            Le mot de passe doit être compris entre 5 et 15 caractères</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <label for="mdp">Mot de passe :</label>
+                    <input type="password" name="mdp" id="mdp"
+                           onkeyup="verifierMotDePasse()"
+                           onfocus="document.getElementById('explication').style.display = 'block'"
+                           onblur="document.getElementById('explication').style.display = 'none'">
+                    <span id="erreurMdp" class="erreur">Le mot de passe est trop faible.</span>
+                </div>
+                <div>
+                    <label for="mdp2">Confirmer passe :</label>
+                    <input type="password" name="mdp2" id="mdp2" onkeyup="verifierConfirmation()">
+                    <span id="erreurMdp2" class="erreur"></span>
+                </div>
+            </div>
+
+            <hr>
+            <div>
+                <label for="accept">Acceptez les conditions d'utilisation :</label>
+                <input type="checkbox" name="accept" id="accept">
+                <span id="erreurAcceptation" class="erreur">Veuillez accepter les conditions pour continuer</span>
+            </div>
+
+            <p>
+                <input type="submit" value="Envoyer">
+            </p>
+        </form>
+    </section>
+
+    <script type="text/javascript">
+        const regexNom = /^[a-zA-Z]{2,10}$/;
+        const regexEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+        function validerFormulaire() {
+            let valide = true;
+
+            valide = verifierNom() && valide;
+            valide = verifierPrenom() && valide;
+            valide = verifierEmail() && valide;
+            valide = verifierFormation() && valide;
+            valide = verifierMotDePasse() && valide;
+            valide = verifierConfirmation() && valide;
+            valide = verifierCaseCochee() && valide;
+
+            return valide;
+        }
+
+        function verifierNom() {
+            if (document.formulaire.nom.value.match(regexNom)) {
+                document.getElementById('erreurNom').style.display = 'none';
+                return true;
+            } else {
+                document.getElementById('erreurNom').style.display = 'inline-block';
+                return false;
+            }
+        }
+
+        function verifierPrenom() {
+            if (document.formulaire.prenom.value.match(regexNom)) {
+                document.getElementById('erreurPrenom').style.display = 'none';
+                return true;
+            } else {
+                document.getElementById('erreurPrenom').style.display = 'inline-block';
+                return false;
+            }
+        }
+
+        function verifierEmail() {
+            if (document.formulaire.email.value.match(regexEmail)) {
+                document.getElementById('erreurEmail').style.display = 'none';
+                return true;
+            } else {
+                document.getElementById('erreurEmail').style.display = 'inline-block';
+                return false;
+            }
+        }
+
+        function verifierFormation() {
+            if (document.formulaire.formation.value === '') {
+                document.getElementById('erreurFormation').style.display = 'inline-block';
+                return false;
+            } else {
+                document.getElementById('erreurFormation').style.display = 'none';
+                return true;
+            }
+        }
+
+        function verifierMotDePasse() {
+            let correct = true;
+            let mdp = document.formulaire.mdp.value;
+            document.getElementById('erreurMdp').style.display = 'none';
+
+            // on teste la présence de chiffre et de lettres
+            if (mdp.search(/\d/) !== -1 && mdp.search(/[a-zA-Z]/) !== -1) {
+                document.getElementById('case1').src = 'img/coche.jpg';
+            } else {
+                correct = false;
+                document.getElementById('case1').src = 'img/vide.png';
+            }
+
+            // on teste la présence de caractère spécial
+            if (mdp.search(/[!#$%&?+=()@*."]/) !== -1) {
+                document.getElementById('case2').src = 'img/coche.jpg';
+            } else {
+                correct = false;
+                document.getElementById('case2').src = 'img/vide.png';
+            }
+
+            // on teste la longueur du mot de passe
+            if (mdp.length >= 5 && mdp.length <= 15) {
+                document.getElementById('case3').src = 'img/coche.jpg';
+            } else {
+                correct = false;
+                document.getElementById('case3').src = 'img/vide.png';
+            }
+
+            if (!correct) {
+                document.getElementById('erreurMdp').style.display = 'block';
+            }
+
+            return correct;
+        }
+
+        function verifierConfirmation() {
+            let valide = true;
+            let monChamp = document.getElementById('erreurMdp2');
+            monChamp.style.display = 'block';
+            monChamp.innerText = '';
+
+            if (document.formulaire.mdp2.value === "") {
+                valide = false;
+                monChamp.innerText = 'La confirmation est obligatoire';
+            }
+
+            if (document.formulaire.mdp.value !== document.formulaire.mdp2.value) {
+                valide = false;
+                monChamp.innerText = 'Les mots de passe doivent être identiques.'
+            }
+
+            return valide;
+        }
+
+        function verifierCaseCochee() {
+            if (document.formulaire.accept.checked) {
+                document.getElementById('erreurAcceptation').style.display = 'none';
+                return true;
+            } else {
+                document.getElementById('erreurAcceptation').style.display = 'inline-block';
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>
