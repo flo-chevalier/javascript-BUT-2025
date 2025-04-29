@@ -6,26 +6,27 @@
 </head>
 <body>
 
-<form action="">
-
-<input type="text" id="source"> <label for="source">$</label>-> <input type="text" id="destination"> <label for="destination">€</label>
+<form id="formulaire">
+    <input type="text" id="source"> <label for="source">$</label>-> <input type="text" id="destination"> <label for="destination">€</label>
+    <br>
+    <button onclick="convertir()">Convertir</button>
 </form>
-<button onclick="convertir()">Convertir</button>
-
 
 <script type="text/javascript">
     const URL = "https://cdn.taux.live/api/ecb.json";
 
-    function convertir(){
+    document.getElementById('formulaire').onsubmit = function convertir(e) {
+        e.preventDefault();
         fetch(URL)
             .then(response => response.json())
-            .then(json => console.log(json))
+            .then(json => {
+                let taux = json.rates.EUR;
+                let montant = document.getElementById('source').value.replace(/,/g, '.');
+                document.getElementById('destination').value = montant * taux;
+            })
             .catch(error => console.error(error))
         ;
-
     }
-
-
 </script>
 
 </body>
