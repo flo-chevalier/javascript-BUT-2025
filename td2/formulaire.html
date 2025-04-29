@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Mon formulaire</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <h1>Valider un formulaire</h1>
+
+    <section>
+        <form action="resultat.html" method="get" name="formulaire" onsubmit="return validerFormulaire()">
+            <div>
+                <label for="nom">Nom :</label>
+                <input type="text" name="nom" id="nom" onkeyup="verifierNom()">
+                <span id="erreurNom" class="erreur">Saisir un nom, entre 2 et 10 caracteres</span>
+            </div>
+            <div>
+                <label for="prenom">Prenom :</label>
+                <input type="text" name="prenom" id="prenom" onkeyup="verifierPrenom()">
+                <span id="erreurPrenom" class="erreur">Saisir un prenom, entre 2 et 10 caracteres</span>
+            </div>
+            <div>
+                <label for="email">Email :</label>
+                <input type="email" name="email" id="email" onkeyup="verifierEmail()">
+                <span id="erreurEmail" class="erreur">Saisir une adresse email valide</span>
+            </div>
+            <div>
+                <label for="formation">Formation :</label>
+                <select name="formation" id="formation" onchange="verifierFormation()">
+                    <option value="" selected></option>
+                    <option value="info">Informatique</option>
+                    <option value="maths">Maths</option>
+                    <option value="physique">Physique</option>
+                </select>
+                <span id="erreurFormation" class="erreur">La formation est obligatoire</span>
+            </div>
+
+            <hr>
+            <div>
+                <div id="explication">
+                    <ul>
+                        <li><img id="case1" src="img/vide.png" alt="une case" height="21">
+                            Le mot de passe doit contenir des lettres et des chiffres
+                        </li>
+                        <li><img id="case2" src="img/vide.png" alt="une case" height="21">
+                            Le mot de passe doit contenir au moins un caractère spécial
+                        </li>
+                        <li><img id="case3" src="img/vide.png" alt="une case" height="21">
+                            Le mot de passe doit être compris entre 5 et 15 caractères
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <label for="mdp">Mot de passe :</label>
+                    <input type="password" name="mdp" id="mdp"
+                           onkeyup="verifierMdp()"
+                           onfocus="document.getElementById('explication').style.display = 'block'"
+                           onblur="document.getElementById('explication').style.display = 'none'">
+                    <span id="erreurMdp" class="erreur">Le mot de passe est trop faible.</span>
+                </div>
+                <div>
+                    <label for="mdp2">Confirmer passe :</label>
+                    <input type="password" name="mdp2" id="mdp2" onkeyup="verifierMdp2()">
+                    <span id="erreurMdp2" class="erreur"></span>
+                </div>
+            </div>
+
+            <hr>
+            <div>
+                <label for="accept">Acceptez les conditions d'utilisation :</label>
+                <input type="checkbox" name="accept" id="accept">
+                <span id="erreurAcceptation" class="erreur">Veuillez accepter les conditions pour continuer</span>
+            </div>
+
+            <p>
+                <input type="submit" value="Envoyer">
+            </p>
+        </form>
+    </section>
+
+    <script type="text/javascript"></script>
+</body>
+</html>

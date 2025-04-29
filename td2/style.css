@@ -1,0 +1,40 @@
+body {
+    margin: auto;
+    padding-left: 5%;
+    padding-right: 5%;
+    max-width:1000px;
+}
+
+section {
+    border: black solid 2px;
+    padding: 3em;
+}
+
+form div {
+    margin-bottom: 5px;
+}
+
+form label {
+    display: inline-block;
+    width: 12em;
+}
+
+.erreur {
+    display: none;
+    color: red;
+    padding: 4px;
+}
+
+#explication {
+    max-width: 50%;
+    float:right;
+    border: solid black 1px;
+    display: none;
+    font-size: 77%;
+}
+
+#explication ul {
+    margin: 0;
+    padding: 10px;
+    list-style-type: none;
+}

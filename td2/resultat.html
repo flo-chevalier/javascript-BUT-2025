@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Les résultats</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <h2>Gestion formulaire</h2>
+
+    <script type="text/javascript">
+        // on récupère les variables dans l'URL sous forme de string
+        let url = location.search.substring(1);
+        // on la découpe pour récupérer chaque variable dans un tableau
+        let variables = url.split("&");
+
+        // maintenant on affiche chaque variable
+        for (let i = 0; i < variables.length - 2; i++) {
+            document.write(unescape(variables[i].substring(0, variables[i].indexOf("="))) + " : "
+                + unescape(variables[i].substring(variables[i].indexOf("=") + 1)) + "<br>");
+        }
+    </script>
+</body>
+</html>
