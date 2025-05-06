@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>JavaScript - TD3 - exo3</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../lib/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <nav class="nav navbar">
+            <h2>Rechercher une ville</h2>
+        </nav>
+
+        <section>
+            <label for="ville" class="hidden"></label>
+            <input id="ville" class="col-xs-12" list="liste-villes"
+                   autocomplete="off" value="" placeholder="Rechercher une commune…">
+            <datalist id="liste-villes"></datalist>
+        </section>
+    </div>
+
+    <script>
+        const MAX = 10;
+        const BASE_URL = 'https://geo.api.gouv.fr';
+
+        /**
+         * Appelée à chaque lettre tapée.
+         * Se charge de remplir la liste des villes en fonction des caractères saisis.
+         */
+        document.querySelector('#ville').onkeyup = function (event) {
+            const key = event.key;
+            const nomSaisi = this.value;
+
+            // si on appuie sur une fleche haut ou bas
+            if (key === 'ArrowUp' || key === 'ArrowDown') {
+                return;
+            }
+
+            fetch(BASE_URL + '/communes?nom=' + nomSaisi + '&fields=departement')
+                .then(function (reponse) {
+                    return reponse.json();
+                })
+                .then(function (json) {
+                    let dataListe = document.querySelector("#liste-villes");
+                    dataListe.innerHTML = '';
+
+                    if (json.length > 0) {
+                        for (let i = 0; i < MAX && i < json.length; i++) {
+                            const ville = json[i];
+
+                            let option = construireBaliseOption(ville);
+                            dataListe.appendChild(option);
+                        }
+                    }
+                })
+                .catch(function (erreur) {
+                    alert('erreur : ' + erreur);
+                })
+                .finally(function () {
+                    //cette fonction est toujours appelée
+                })
+        };
+
+        function construireBaliseOption(ville) {
+            const nomDepartement = recupererNomDepartement(ville);
+
+            const option = document.createElement('option');
+            option.innerHTML = `${ville.nom} ${nomDepartement}`
+            option.value = ville.nom;
+
+            return option;
+        }
+
+        function recupererNomDepartement(ville) {
+            return ville.departement != null ? `(${ville.departement.nom} - ${ville.departement.code})` : '';
+        }
+    </script>
+</body>
+</html>

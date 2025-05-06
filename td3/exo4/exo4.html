@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript - TD3 - exo 4</title>
+    <link rel="stylesheet" href="../lib/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+        </header>
+
+        <section>
+            <hr>
+
+            <p>
+                Cette page fait des requêtes AJAX afin de récupérer le HEADER et le FOOTER.
+            </p>
+
+            <button id="bouton-header" class="btn btn-default">Afficher le header</button>
+            <button id="bouton-footer" class="btn btn-default">Afficher le footer</button>
+
+            <hr>
+        </section>
+
+        <footer>
+        </footer>
+    </div>
+
+    <script type="text/javascript" src="../lib/jquery-3.3.1.js"></script>
+    <script>
+        /**
+         * Avec l'API fetch.
+         */
+        document.querySelector('#bouton-header').onclick = function () {
+            const url = '../fragments/header.html';
+            fetch(url)
+                .then((reponse) => {
+                    return reponse.text();
+                })
+                .then((html) => {
+                    let pageTemporaire = document.createElement('html');
+                    pageTemporaire.innerHTML = html;
+                    let maDiv = pageTemporaire.querySelector('#header-fragment');
+                    document.querySelector('header').innerHTML = maDiv.innerHTML;
+                })
+                .catch((erreur) => {
+                    alert('erreur : ' + erreur);
+                })
+                .finally(function () {
+                    //alert('complete');
+                })
+        };
+
+        /**
+         * Avec jQuery.
+         */
+        $('#bouton-footer').on('click', function () {
+            $.ajax({
+                // attention ! il faut adapter l'url à votre propre cas
+                url: '../fragments/footer.html',
+                type: 'GET',
+                dataType: 'HTML',
+                success: function (resultat, statut) {
+                    let maDiv = $(resultat).filter('#footer-fragment');
+
+                    $('footer').replaceWith(maDiv);
+                },
+                error: function (resultat, statut, erreur) {
+                    alert('erreur : ' + erreur);
+                },
+                complete: function () {
+                    //alert('complete');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
