@@ -1,0 +1,124 @@
+{
+  "etudiants": [
+    {
+      "nom": "Martin",
+      "prenom": "Lucas"
+    },
+    {
+      "nom": "Bernard",
+      "prenom": "Emma"
+    },
+    {
+      "nom": "Dubois",
+      "prenom": "Louis"
+    },
+    {
+      "nom": "Thomas",
+      "prenom": "Léa"
+    },
+    {
+      "nom": "Robert",
+      "prenom": "Gabriel"
+    },
+    {
+      "nom": "Richard",
+      "prenom": "Chloé"
+    },
+    {
+      "nom": "Petit",
+      "prenom": "Jules"
+    },
+    {
+      "nom": "Durand",
+      "prenom": "Alice"
+    },
+    {
+      "nom": "Leroy",
+      "prenom": "Hugo"
+    },
+    {
+      "nom": "Moreau",
+      "prenom": "Jade"
+    },
+    {
+      "nom": "Simon",
+      "prenom": "Arthur"
+    },
+    {
+      "nom": "Laurent",
+      "prenom": "Louise"
+    },
+    {
+      "nom": "Lefebvre",
+      "prenom": "Noah"
+    },
+    {
+      "nom": "Michel",
+      "prenom": "Manon"
+    },
+    {
+      "nom": "Garcia",
+      "prenom": "Adam"
+    },
+    {
+      "nom": "David",
+      "prenom": "Juliette"
+    },
+    {
+      "nom": "Bertrand",
+      "prenom": "Raphaël"
+    },
+    {
+      "nom": "Roux",
+      "prenom": "Camille"
+    },
+    {
+      "nom": "Vincent",
+      "prenom": "Nathan"
+    },
+    {
+      "nom": "Fournier",
+      "prenom": "Sarah"
+    },
+    {
+      "nom": "Morel",
+      "prenom": "Maxime"
+    },
+    {
+      "nom": "Girard",
+      "prenom": "Eva"
+    },
+    {
+      "nom": "Andre",
+      "prenom": "Paul"
+    },
+    {
+      "nom": "Lefevre",
+      "prenom": "Inès"
+    },
+    {
+      "nom": "Mercier",
+      "prenom": "Antoine"
+    },
+    {
+      "nom": "Dupont",
+      "prenom": "Charlotte"
+    },
+    {
+      "nom": "Lambert",
+      "prenom": "Théo"
+    },
+    {
+      "nom": "Bonnet",
+      "prenom": "Zoé"
+    },
+    {
+      "nom": "Francois",
+      "prenom": "Mathis"
+    },
+    {
+      "nom": "Martinez",
+      "prenom": "Clara"
+    }
+  ]
+}
