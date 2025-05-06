@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>JavaScript - TD3 - exo2</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../lib/bootstrap.min.css">
+    <style>
+        select {
+            min-width: 15em;
+            border-radius: 5px;
+            background-color: white;
+            -webkit-appearance: button;
+            -webkit-padding-end: 20px;
+            -webkit-padding-start: 2px;
+            -moz-appearance: button;
+            -moz-padding-end: 20px;
+            -moz-padding-start: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="nav navbar">
+            <h2>Mon formulaire</h2>
+        </nav>
+
+        <section>
+            <form id="formulaire" action="javascript:alert('Le formulaire est valide !');" method="POST"
+                  class="form-horizontal">
+                <div class="form-group">
+                    <label for="nom" class="col-sm-2 control-label">Nom</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="nom" name="nom" placeholder="Dylan">
+                        <div id="erreur-nom" class="text-danger"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="prenom" class="col-sm-2 control-label">Prénom</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="prenom" name="prenom" placeholder="Bob">
+                        <div id="erreur-prenom" class="text-danger"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="col-sm-2 control-label">Email</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="email" name="email" placeholder="bob@dylan.net">
+                        <div id="erreur-email" class="text-danger"></div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="form-group">
+                    <label for="departement" class="col-sm-2 control-label">Département</label>
+                    <div class="col-sm-10">
+                        <select id="departement" name="departement">
+                            <option value="">Choisir un département</option>
+                        </select>
+                        <div id="erreur-departement" class="text-danger"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="ville" class="col-sm-2 control-label">Ville</label>
+                    <div class="col-sm-10">
+                        <select id="ville" name="ville"></select>
+                        <div id="erreur-ville" class="text-danger"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button class="btn btn-primary" type="submit">Valider</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div> <!-- fin .container -->
+
+
+    <script>
+        const BASE_URL = 'https://geo.api.gouv.fr';
+
+        /**
+         * Appelée au chargement de la page.
+         * Elle complète le select #departement avec les départements retournés par la requête Ajax.
+         */
+        window.onload = function () {
+            fetch(BASE_URL + '/departements')
+                .then(function (reponse) {
+                    return reponse.json();
+                })
+                .then(function (json) {
+                    const selectDepartements = document.getElementById('departement');
+
+                    for (const departement of json) {
+                        const option = document.createElement('option');
+                        option.innerHTML = departement.nom;
+                        option.value = departement.code;
+
+                        selectDepartements.appendChild(option);
+                    }
+                })
+                .catch(function (erreur) {
+                    alert('erreur : ' + erreur);
+                })
+                .finally(function () {
+                    //alert('complete');
+                })
+        };
+
+        /**
+         * Appelée à chaque changement de département.
+         * Se charge de remplir la liste des villes en fonction du département sélectionné.
+         */
+        document.getElementById('departement').addEventListener('change', function () {
+            const numeroDep = this.value;
+            const selectVilles = document.getElementById('ville');
+
+            if (numeroDep !== "") {
+                fetch(BASE_URL + '/departements/' + numeroDep + '/communes')
+                    .then(function (reponse) {
+                        return reponse.json();
+                    })
+                    .then(function (json) {
+                        // on vide le select des villes
+                        selectVilles.options.length = 0;
+
+                        for (const ville of json) {
+                            const option = document.createElement('option');
+                            const texte = document.createTextNode(ville.nom + ' (' + ville.codesPostaux[0] + ')');
+                            option.appendChild(texte);
+                            option.value = ville.code;
+
+                            selectVilles.appendChild(option);
+                        }
+                    })
+                    .catch(function (erreur) {
+                        alert('erreur : ' + erreur);
+                    })
+                    .finally(function () {
+                        //alert('complete');
+                    })
+            } else {
+                // on vide le select des villes
+                selectVilles.options.length = 0;
+            }
+        });
+
+        /**
+         * Appelée à la validation du formulaire.
+         * Affiche les messages d'erreurs si besoin.
+         */
+        document.getElementById('formulaire').addEventListener('submit', function (e) {
+            let valide = true;
+            document.querySelector('#erreur-nom').innerHTML = '';
+            document.querySelector('#erreur-prenom').innerHTML = '';
+            document.querySelector('#erreur-email').innerHTML = '';
+            document.querySelector('#erreur-departement').innerHTML = '';
+            document.querySelector('#erreur-ville').innerHTML = '';
+
+            const REGEX_NOM = /^[a-zA-Z]{2,50}$/;
+            const REGEX_EMAIL = /^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+            if (!document.getElementById('nom').value.match(REGEX_NOM)) {
+                valide = false;
+                document.getElementById('erreur-nom').innerHTML = 'Le nom est obligatoire et doit contenir entre 2 et 50 lettres.';
+            }
+
+            if (!document.getElementById('prenom').value.match(REGEX_NOM)) {
+                valide = false;
+                document.getElementById('erreur-prenom').innerHTML = 'Le prénom est obligatoire et doit contenir entre 2 et 50 lettres.';
+            }
+
+            if (!document.getElementById('email').value.match(REGEX_EMAIL)) {
+                valide = false;
+                document.getElementById('erreur-email').innerHTML = "L'adresse email est invalide.";
+            }
+
+            if (!document.getElementById('departement').value) {
+                valide = false;
+                document.getElementById('erreur-departement').innerHTML = 'Le département est obligatoire.';
+            }
+
+            if (!document.getElementById('ville').value) {
+                valide = false;
+                document.getElementById('erreur-ville').innerHTML = 'La ville est obligatoire.';
+            }
+
+            if (!valide) {
+                // permet de ne pas submit le formulaire si on utilise la fonction addEventListener
+                e.preventDefault();
+            }
+
+            return valide;
+        });
+    </script>
+</body>
+</html>

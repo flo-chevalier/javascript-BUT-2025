@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>JavaScript - TD3 - exo2</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../lib/bootstrap.min.css">
+    <style>
+        select {
+            min-width: 15em;
+            border-radius: 5px;
+            background-color: white;
+            -webkit-appearance: button;
+            -webkit-padding-end: 20px;
+            -webkit-padding-start: 2px;
+            -moz-appearance: button;
+            -moz-padding-end: 20px;
+            -moz-padding-start: 2px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <nav class="nav navbar">
+        <h2>Mon formulaire</h2>
+    </nav>
+
+    <section>
+        <form id="formulaire" action="javascript:alert('Le formulaire est valide !');" method="POST"
+              class="form-horizontal">
+            <div class="form-group">
+                <label for="nom" class="col-sm-2 control-label">Nom</label>
+                <div class="col-sm-10">
+                    <input type="text" id="nom" name="nom" placeholder="Dylan">
+                    <div id="erreur-nom" class="text-danger"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="prenom" class="col-sm-2 control-label">Prénom</label>
+                <div class="col-sm-10">
+                    <input type="text" id="prenom" name="prenom" placeholder="Bob">
+                    <div id="erreur-prenom" class="text-danger"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="col-sm-2 control-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="text" id="email" name="email" placeholder="bob@dylan.net">
+                    <div id="erreur-email" class="text-danger"></div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label for="departement" class="col-sm-2 control-label">Département</label>
+                <div class="col-sm-10">
+                    <select id="departement" name="departement">
+                        <option value="">Choisir un département</option>
+                    </select>
+                    <div id="erreur-departement" class="text-danger"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="ville" class="col-sm-2 control-label">Ville</label>
+                <div class="col-sm-10">
+                    <select id="ville" name="ville"></select>
+                    <div id="erreur-ville" class="text-danger"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button class="btn btn-primary" type="submit">Valider</button>
+                </div>
+            </div>
+        </form>
+    </section>
+</div> <!-- fin .container -->
+
+
+<script type="text/javascript" src="../lib/jquery-3.3.1.js"></script>
+<script>
+    const baseUrl = 'https://geo.api.gouv.fr';
+
+    /**
+     * Appelée au chargement de la page.
+     * Elle complète le select #departement avec les départements retournés par la requête Ajax.
+     */
+    $(function () {
+        $.ajax({
+            url: baseUrl + '/departements',
+            type: 'GET',
+            dataType: 'JSON',
+            success: function (resultat, statut) {
+                resultat.forEach(function (departement) {
+                    $('#departement').append('<option value="' + departement.code + '">' + departement.nom + '</option>');
+                });
+            },
+            error: function (resultat, statut, erreur) {
+                alert("erreur : " + erreur);
+            },
+            complete: function () {
+                //alert("complete");
+            }
+        });
+    });
+
+    /**
+     * Appelée à la validation du formulaire.
+     * Affiche les messages d'erreurs si besoin.
+     */
+    $('#formulaire').on('submit', function () {
+        let valide = true;
+        $('#erreur-nom').empty();
+        $('#erreur-prenom').empty();
+        $('#erreur-email').empty();
+        $('#erreur-departement').empty();
+        $('#erreur-ville').empty();
+
+        let regexNom = /^[a-zA-Z]{2,50}$/;
+
+        if (!$('#nom').val().match(regexNom)) {
+            valide = false;
+            $('#erreur-nom').text('Le nom est obligatoire et doit contenir entre 2 et 50 lettres.').show();
+        }
+
+        if (!$('#prenom').val().match(regexNom)) {
+            valide = false;
+            $('#erreur-prenom').text("Le prénom est obligatoire et doit contenir entre 2 et 50 lettres.").show();
+        }
+
+        let regexEmail = /^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+        if (!$('#email').val().match(regexEmail)) {
+            valide = false;
+            $('#erreur-email').text("L'adresse email est invalide.").show();
+        }
+
+        if ($('#departement').val() === null || $('#departement').val() === "") {
+            valide = false;
+            $('#erreur-departement').text('Le département est obligatoire.').show();
+        }
+
+        if ($('#ville').val() === null || $('#ville').val() === "") {
+            valide = false;
+            $('#erreur-ville').text('La ville est obligatoire.').show();
+        }
+
+        return valide;
+    });
+
+    /**
+     * Appelée à chaque changement de département.
+     * Se charge de remplir la liste des villes en fonction du département sélectionné.
+     */
+    $('#departement').on('change', function () {
+        let numeroDep = $('#departement').val();
+
+        if (numeroDep !== "") {
+            $.ajax({
+                url: baseUrl + '/departements/' + numeroDep + '/communes',
+                type: 'GET',
+                dataType: 'JSON',
+                success: function (resultat, statut) {
+                    let villes = resultat;
+
+                    // on vide le select des villes
+                    $('#ville').empty();
+
+                    villes.forEach(function (ville) {
+                        $('#ville').append(
+                            '<option value="' + ville.code + '">' + ville.nom + ' (' + ville.codesPostaux[0] + ')</option>'
+                        );
+                    });
+                },
+                error: function (resultat, statut, erreur) {
+                    alert("erreur : " + erreur);
+                },
+                complete: function () {
+                    //alert("complete");
+                }
+            });
+        } else {
+            $('#ville').empty();
+        }
+    });
+</script>
+</body>
+</html>
